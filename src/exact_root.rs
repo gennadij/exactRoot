@@ -35,7 +35,7 @@
 
 
 
-  pub fn berechne_exacte_wurzel(wurzel_wert : u64) -> u64 {
-    println!("Hier wird die Implementierung stattfinden");
-    0
-  }
+pub fn berechne_exacte_wurzel(wurzel_wert : u64) -> u64 {
+  println!("Hier wird die Implementierung stattfinden");
+  0
+}
