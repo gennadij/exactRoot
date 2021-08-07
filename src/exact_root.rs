@@ -34,21 +34,24 @@
   ------------------------------------------------------------------------------*/
 
 
-
 pub fn berechne_exacte_wurzel(radikand : u64) -> u64 {
   berechne_ungerade_zahlen(radikand);
+  berechne_standard_werte(radikand);
   0
 }
 
 fn berechne_standard_werte(radikand : u64) {
-
+  println!("berechne_standard_werte {}" , radikand)
 }
+
 use std::vec::Vec;
 fn berechne_ungerade_zahlen(radikand: u64) {
   let mut v = Vec::new();
-  let mut index = 0;
+  let mut index  = 0;
   while index < radikand {
-    v.push(index % 2);
+    if index & 1 == 1 {
+      v.push(index);
+    }
     index +=1;
   }
 
