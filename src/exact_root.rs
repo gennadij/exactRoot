@@ -35,7 +35,22 @@
 
 
 
-pub fn berechne_exacte_wurzel(wurzel_wert : u64) -> u64 {
-  println!("Hier wird die Implementierung stattfinden");
+pub fn berechne_exacte_wurzel(radikand : u64) -> u64 {
+  berechne_ungerade_zahlen(radikand);
   0
 }
+
+fn berechne_standard_werte(radikand : u64) {
+
+}
+use std::vec::Vec;
+fn berechne_ungerade_zahlen(radikand: u64) {
+  let mut v = Vec::new();
+  let mut index = 0;
+  while index < radikand {
+    v.push(index % 2);
+    index +=1;
+  }
+
+  println!("Ungerade Zahlen {:?}", v);
+} 
