@@ -11,7 +11,7 @@
   25 + 11 = [4,9,16,25,36]
   36 + 13 = [4,9,16,25,36,49]
   
-  1. Berschne ungerade Reihe bis 50
+  1. Berechne ungerade Reihe bis 50
   2. Berechne in der ungerade Reihe die summe der ersten zwei Elemente und hänge
      diese an der neue Reihe (siehe oben). 
   3. Parallel zu der o.g. Reihe wird zu jedem Wert einen Wert aus der einfache 
@@ -35,13 +35,28 @@
 
 
 pub fn berechne_exacte_wurzel(radikand : u64) -> u64 {
-  println!("Ungerade Zahlen {:?}", berechne_ungerade_zahlen(radikand));
-  berechne_standard_werte(radikand);
+  let ungerade_zahlen = berechne_ungerade_zahlen(radikand);
+  let standard_werte = berechne_standard_werte(ungerade_zahlen);
+  let einfache_reihe = berechne_einfache_reihe(radikand);
+  println!("zippen {:?}", zippen(standard_werte, einfache_reihe));
   0
 }
 
-fn berechne_standard_werte(radikand : u64) {
-  println!("berechne_standard_werte {}" , radikand)
+fn berechne_standard_werte(ungerade_zahlen: Vec<u64>) -> Vec<u64> {
+  let mut counter = 0;
+  let mut result : Vec<u64> = Vec::new();
+  let size = ungerade_zahlen.len();
+  while counter < (size - 1) {
+    if counter == 0 {
+      let temp = ungerade_zahlen[counter] + ungerade_zahlen[counter + 1];
+      result.push(temp);
+    }else{
+      let temp = result[counter - 1] + ungerade_zahlen[counter + 1];
+      result.push(temp);
+    }
+    counter += 1;
+  }
+  result
 }
 
 use std::vec::Vec;
@@ -51,3 +66,16 @@ fn berechne_ungerade_zahlen(radikand: u64) -> Vec<u64>{
     .filter(|x| x % 2 != 0)
     .collect::<Vec<u64>>()
 } 
+
+fn berechne_einfache_reihe(radikand: u64) -> Vec<u64> {
+  let teiler = (radikand / 2) + 1;
+  (2..teiler).collect::<Vec<u64>>()
+}
+
+fn zippen(standard_werte: Vec<u64>, einfache_reihe: Vec<u64>) -> Vec<(u64,u64)> {
+  let mut result : Vec<(u64, u64)> = Vec::new();
+  for (x, y) in einfache_reihe.iter().zip(standard_werte.iter()) {
+    result.push((*x, *y));
+  }
+  result
+}
