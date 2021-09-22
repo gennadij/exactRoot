@@ -24,8 +24,8 @@
      ausgegeben
      Funktion : berechneEinfacheWurzelwert
   5. Berechnung des komplexen Wurzelwertes z.B. sqrt(50) = 5 * sqrt(2)
-     Bei der komplexen Berechnung wird Iterativ versucht jeden Radikand aus der 
-     Reihe Wurzelwert_Radikand mit Hilfe der quotRem funktion zu teilen.
+     Bei der komplexen Berechnung wird iterativ versucht jeden Radikand aus der 
+     Reihe Radikand_Wurzelwert mit Hilfe der quotRem funktion zu teilen.
      Wenn einen Teiler ohne Rest gefunden wird wird der Ergebnis zu dem
      unberechnetem Radikand unter Wurzel und der Wurzelwert aus der Reihe 
      Werzelwert_Radikand zu dem Multiplikator. 
@@ -35,10 +35,18 @@
 
 
 pub fn berechne_exacte_wurzel(radikand : u64) -> u64 {
-  let ungerade_zahlen = berechne_ungerade_zahlen(radikand);
-  let standard_werte = berechne_standard_werte(ungerade_zahlen);
-  let einfache_reihe = berechne_einfache_reihe(radikand);
-  println!("zippen {:?}", zippen(standard_werte, einfache_reihe));
+  let ungerade_zahlen_1 = berechne_ungerade_zahlen(radikand);
+  let standard_werte_1 = berechne_standard_werte(ungerade_zahlen_1);
+  let einfache_reihe_1 = berechne_einfache_reihe(radikand);
+  let radikand_wurzelwert_1 = zippen(standard_werte_1, einfache_reihe_1);
+  let einfache_wurzelwert = berechne_einfache_wurzelwert(radikand, radikand_wurzelwert_1);
+  println!("Einfache Wurzelwert {:?}", einfache_wurzelwert);
+  let ungerade_zahlen_2 = berechne_ungerade_zahlen(radikand);
+  let standard_werte_2 = berechne_standard_werte(ungerade_zahlen_2);
+  let einfache_reihe_2 = berechne_einfache_reihe(radikand);
+  let radikand_wurzelwert_2 = zippen(standard_werte_2, einfache_reihe_2);
+  let komplexe_wurzelwert = berechne_komplexe_wurzelwert(radikand, radikand_wurzelwert_2);
+  println!("Komplexe Wurzelwert {:?}", komplexe_wurzelwert);
   0
 }
 
@@ -77,5 +85,29 @@ fn zippen(standard_werte: Vec<u64>, einfache_reihe: Vec<u64>) -> Vec<(u64,u64)> 
   for (x, y) in einfache_reihe.iter().zip(standard_werte.iter()) {
     result.push((*x, *y));
   }
+  result
+}
+
+fn berechne_einfache_wurzelwert(radikand: u64, radikand_wurzelwert: Vec<(u64, u64)>) -> Option<u64> {
+  let result: Vec<(u64, u64)> = radikand_wurzelwert.into_iter()
+      .filter(|(_, y)|  *y == radikand).collect::<Vec<(u64, u64)>>();
+  if result.len() == 0 {
+    None
+  }else{
+    Some(result[0].0)
+  }
+}
+    
+fn berechne_komplexe_wurzelwert(radikand: u64, radikand_wurzelwert: Vec<(u64, u64)>) -> Option<(u64, u64)> {
+  let mut result: Option<(u64, u64)> = None;
+  // println!("radikand_wurzelwert {:?}", radikand_wurzelwert);
+  for (x, y) in radikand_wurzelwert.iter() {
+    let temp = radikand % y;
+    // println!("temp = radikand % y; {} {} {}", temp, radikand, y);
+    if temp == 0 {
+      result = Some((*x, (radikand / y)));
+      break;
+    }
+  } 
   result
 }
