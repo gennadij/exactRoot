@@ -34,20 +34,26 @@
   ------------------------------------------------------------------------------*/
 
 
-pub fn berechne_exacte_wurzel(radikand : u64) -> u64 {
+pub fn berechne_exacte_wurzel(radikand : u64) -> String {
   let ungerade_zahlen_1 = berechne_ungerade_zahlen(radikand);
   let standard_werte_1 = berechne_standard_werte(ungerade_zahlen_1);
   let einfache_reihe_1 = berechne_einfache_reihe(radikand);
   let radikand_wurzelwert_1 = zippen(standard_werte_1, einfache_reihe_1);
   let einfache_wurzelwert = berechne_einfache_wurzelwert(radikand, radikand_wurzelwert_1);
-  println!("Einfache Wurzelwert {:?}", einfache_wurzelwert);
+  //println!("Einfache Wurzelwert {:?}", einfache_wurzelwert);
   let ungerade_zahlen_2 = berechne_ungerade_zahlen(radikand);
   let standard_werte_2 = berechne_standard_werte(ungerade_zahlen_2);
   let einfache_reihe_2 = berechne_einfache_reihe(radikand);
   let radikand_wurzelwert_2 = zippen(standard_werte_2, einfache_reihe_2);
   let komplexe_wurzelwert = berechne_komplexe_wurzelwert(radikand, radikand_wurzelwert_2);
-  println!("Komplexe Wurzelwert {:?}", komplexe_wurzelwert);
-  0
+  //println!("Komplexe Wurzelwert {:?}", komplexe_wurzelwert);
+  let multiplikator = komplexe_wurzelwert.unwrap().0.to_string();
+  let wurzelwert = komplexe_wurzelwert.unwrap().1.to_string();
+  match einfache_wurzelwert {
+    Some(res) => res.to_string(),
+    None => multiplikator + "*sqrt(" + &wurzelwert + ")"
+  }
+  // unberehenbare Wurzel loesen panic aus
 }
 
 fn berechne_standard_werte(ungerade_zahlen: Vec<u64>) -> Vec<u64> {
